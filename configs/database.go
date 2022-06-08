@@ -3,7 +3,7 @@ package configs
 import (
 	"context"
 	"fmt"
-	"github.com/MrMohebi/didi-auto-connect-api.git/common"
+	"github.com/MrMohebi/take-course-golestan-api.git/common"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"

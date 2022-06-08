@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"github.com/MrMohebi/didi-auto-connect-api.git/common"
+	"github.com/MrMohebi/take-course-golestan-api.git/common"
 	"github.com/joho/godotenv"
 	"os"
 )

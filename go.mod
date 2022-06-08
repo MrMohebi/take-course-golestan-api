@@ -1,4 +1,4 @@
-module github.com/MrMohebi/didi-auto-connect-api.git
+module github.com/MrMohebi/take-course-golestan-api.git
 
 go 1.18
 

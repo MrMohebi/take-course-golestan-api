@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/MrMohebi/didi-auto-connect-api.git/common"
-	"github.com/MrMohebi/didi-auto-connect-api.git/configs"
-	"github.com/MrMohebi/didi-auto-connect-api.git/router"
+	"github.com/MrMohebi/take-course-golestan-api.git/common"
+	"github.com/MrMohebi/take-course-golestan-api.git/configs"
+	"github.com/MrMohebi/take-course-golestan-api.git/router"
 	"github.com/gin-gonic/gin"
 )
 
