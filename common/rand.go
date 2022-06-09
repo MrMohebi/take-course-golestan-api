@@ -29,3 +29,8 @@ func RandStrAlphabet(n int) string {
 	}
 	return string(b)
 }
+
+// RandNumber generate random integer number in specific range
+func RandNumber(min int, max int) int {
+	return rand.Intn(max-min) + min
+}

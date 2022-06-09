@@ -20,8 +20,8 @@ type Payment struct {
 	Link            string             `json:"link"`
 	CallbackUrl     string             `json:"callbackUrl"`
 	Amount          int16              `json:"amount"`
-	PaidAt          int32              `json:"paidAt"`
-	CreatedAt       int32              `json:"createdAt"`
+	PaidAt          int64              `json:"paidAt"`
+	CreatedAt       int64              `json:"createdAt"`
 }
 
 var PaymentsCollection *mongo.Collection = configs.GetCollection(configs.GetDBClint(), "payments")

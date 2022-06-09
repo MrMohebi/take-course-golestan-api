@@ -1,7 +1,9 @@
 package faces
 
 type BuyCodeRes struct {
-	Link string `json:"link"`
+	HasCode  bool   `json:"hasCode"`
+	PayLink  string `json:"payLink,omitempty"`
+	DaysLeft int    `json:"daysLeft,omitempty"`
 }
 
 type BuyCodeReq struct {

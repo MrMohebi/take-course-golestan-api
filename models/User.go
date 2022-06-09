@@ -13,8 +13,8 @@ type User struct {
 	Phone     string             `json:"phone"`
 	Email     string             `json:"email"`
 	Token     string             `json:"token"`
-	LastLogin int32              `json:"lastLogin"`
-	CreatedAt int32              `json:"createdAt"`
+	LastLogin int64              `json:"lastLogin"`
+	CreatedAt int64              `json:"createdAt"`
 }
 
 var UsersCollection *mongo.Collection = configs.GetCollection(configs.GetDBClint(), "users")
