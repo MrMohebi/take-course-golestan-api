@@ -19,7 +19,7 @@ type Payment struct {
 	CardNumberHash  string             `json:"cardNumberHash"`
 	Link            string             `json:"link"`
 	CallbackUrl     string             `json:"callbackUrl"`
-	Amount          int16              `json:"amount"`
+	Amount          int64              `json:"amount"`
 	PaidAt          int64              `json:"paidAt"`
 	CreatedAt       int64              `json:"createdAt"`
 }

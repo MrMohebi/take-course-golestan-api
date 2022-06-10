@@ -3,6 +3,7 @@ package contorolers
 import (
 	"context"
 	"github.com/MrMohebi/take-course-golestan-api.git/common"
+	"github.com/MrMohebi/take-course-golestan-api.git/common/idpay"
 	"github.com/MrMohebi/take-course-golestan-api.git/faces"
 	"github.com/MrMohebi/take-course-golestan-api.git/models"
 	ghasedak "github.com/ghasedakapi/ghasedak-go"
@@ -17,6 +18,7 @@ import (
 
 func BuyCode() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		currentTime := time.Now().Unix()
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
@@ -46,14 +48,42 @@ func BuyCode() gin.HandlerFunc {
 			return
 		}
 
-		//ghasedak "github.com/ghasedakapi/ghasedak-go"
-		//activeCode := common.RandNumber(11111111, 99999999)
-		//ghasedakClient := ghasedak.NewClient(os.Getenv("GHASEDAK_KEY"), "")
-		//ghasedakClient.SendOTP(reqBody.Phone, "gtcActiveCode", activeCode)
+		// create payment link
+		paymentInfo := models.Payment{
+			Amount:      200000,
+			CallbackUrl: "https://gtc.m3m.dev/payVerify",
+			OrderId:     strconv.Itoa(common.RandNumber(11111111, 99999999)),
+			PayerPhone:  reqBody.Phone,
+			PayerEmail:  reqBody.Email,
+			CreatedAt:   currentTime,
+		}
+		paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), true)
+		createRes := paymentClient.CreatePayment(
+			paymentInfo.OrderId,
+			paymentInfo.Amount,
+			paymentInfo.CallbackUrl,
+			"",
+			paymentInfo.PayerPhone,
+			paymentInfo.PayerEmail,
+			"",
+		)
 
-		//c.JSON(http.StatusOK, gin.H{
-		//	"token": token,
-		//})
+		if createRes.ReqStatus.Success {
+			paymentInfo.Link = createRes.Link
+			paymentInfo.IdpayId = createRes.Id
+		}
+
+		_, err := models.PaymentsCollection.InsertOne(ctx, paymentInfo)
+		common.IsErr(err)
+
+		if err == nil {
+			c.JSON(http.StatusInternalServerError, faces.BuyCodeRes{
+				HasCode: false,
+				PayLink: paymentInfo.Link,
+			})
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{})
 	}
 }
 
