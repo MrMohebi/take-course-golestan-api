@@ -15,4 +15,5 @@ func Routs(r *gin.Engine) {
 	r.POST("/login", contorolers.Login())
 	r.POST("/buyCode", contorolers.BuyCode())
 	r.POST("/payVerify", contorolers.PayVerify())
+	r.POST("/isActiveCodeValid", contorolers.IsActiveCodeValid())
 }
