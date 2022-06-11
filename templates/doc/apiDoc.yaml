@@ -1,49 +1,79 @@
 swagger: "2.0"
 info:
-  title: didi
-  description: didi aouto cennect.
-  version: 1.0.0
-host: didi.m3m.dev
-basePath: /api
+  title: GTC
+  description: Golestan auto Take Course.
+  version: 1.0.1
+host: gtc.m3m.dev
+basePath: /
 schemes:
   - https
 
 paths:
-  /login.php:
+  /buyCode:
     post:
-      summary: login or create new user
+      summary: buy a new active code or Send previous active code as SMS to buyer phone
       requestBody:
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                password:
+                phone:
                   type: string
               example:
-                id: mrm
-                name: pass
+                phone: 09221231213
       responses:
         '200':
-          description: token and hasAccess.
+          description: payment link or sent SMS.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  token:
+                  hasCode:
+                    type: boolean
+                  payLink:
                     type: string
-                  hasAccess:
-                    type: boolean
-                  isLimit:
-                    type: boolean
+                  daysLeft:
+                    type: integer
                 example:
-                  token: a5c65213e46dd08bfaba2c75ff4eabaf
-                  hasAccess: true
-                  isLimit: false
+                  hasCode: false
+                  payLink: "https://idpay.ir/p/a686fa252d61c7068839d716e0e2feff"
+                  daysLeft: 0
         '400':
           description: wrong input.
-        '401':
-          description: wrong password.
+        '500':
+          description: internal server error.
+
+  /isActiveCodeValid:
+    post:
+      summary: check if active code still validate
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+              example:
+                code: 14253614
+      responses:
+        '200':
+          description: code status and remaining days.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isValid:
+                    type: boolean
+                  daysLeft:
+                    type: integer
+                example:
+                  isValid: true
+                  daysLeft: 4
+        '400':
+          description: wrong input.
+        '500':
+          description: internal server error.
