@@ -9,6 +9,7 @@ import (
 	ghasedak "github.com/ghasedakapi/ghasedak-go"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math"
 	"net/http"
 	"os"
@@ -23,7 +24,10 @@ func BuyCode() gin.HandlerFunc {
 		defer cancel()
 
 		var reqBody faces.BuyCodeReq
-		common.ValidBindForm(c, &reqBody)
+		isValidateReq := common.ValidBindForm(c, &reqBody)
+		if !isValidateReq {
+			return
+		}
 
 		var activeCode models.ActiveCode
 
@@ -50,6 +54,7 @@ func BuyCode() gin.HandlerFunc {
 
 		// create payment link
 		paymentInfo := models.Payment{
+			Id:          primitive.NewObjectID(),
 			Amount:      200000,
 			CallbackUrl: "https://gtc.m3m.dev/payVerify",
 			OrderId:     strconv.Itoa(common.RandNumber(11111111, 99999999)),
@@ -77,10 +82,11 @@ func BuyCode() gin.HandlerFunc {
 		common.IsErr(err)
 
 		if err == nil {
-			c.JSON(http.StatusInternalServerError, faces.BuyCodeRes{
+			c.JSON(http.StatusOK, faces.BuyCodeRes{
 				HasCode: false,
 				PayLink: paymentInfo.Link,
 			})
+			return
 		}
 
 		c.JSON(http.StatusInternalServerError, gin.H{})
