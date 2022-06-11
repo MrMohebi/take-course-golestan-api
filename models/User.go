@@ -8,13 +8,13 @@ import (
 
 type User struct {
 	Id        primitive.ObjectID `json:"id" bson:"_id"`
-	Username  string             `json:"username"`
-	Password  string             `json:"password"`
-	Phone     string             `json:"phone"`
-	Email     string             `json:"email"`
-	Token     string             `json:"token"`
-	LastLogin int64              `json:"lastLogin"`
-	CreatedAt int64              `json:"createdAt"`
+	Username  string             `json:"username" bson:"username"`
+	Password  string             `json:"password" bson:"password"`
+	Phone     string             `json:"phone" bson:"phone"`
+	Email     string             `json:"email" bson:"email"`
+	Token     string             `json:"token" bson:"token"`
+	LastLogin int64              `json:"lastLogin" bson:"lastLogin"`
+	CreatedAt int64              `json:"createdAt" bson:"createdAt"`
 }
 
 var UsersCollection *mongo.Collection = configs.GetCollection(configs.GetDBClint(), "users")
