@@ -11,6 +11,7 @@ func Routs(r *gin.Engine) {
 
 	r.GET("/", contorolers.Index())
 	r.GET("/docs", contorolers.Docs())
+	r.GET("/payResult", contorolers.PayResult())
 
 	r.POST("/login", contorolers.Login())
 	r.POST("/buyCode", contorolers.BuyCode())

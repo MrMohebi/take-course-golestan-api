@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>فعال سازی حساب</title>
+</head>
+<body>
+
+<div style="width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center">
+    <span id="status"></span>
+    <div style="margin-top: 20px">
+        <span>کد فعال سازی:</span>
+        <span id="code"></span>
+    </div>
+
+    <button style="margin-top: 20px" onclick="window.close()">بازگشت</button>
+</div>
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const statusSpan = document.getElementById("status")
+    if(urlParams.has("activeCode") && (urlParams.get("activeCode").length > 2)){
+        statusSpan.innerText = "پرداخت شما با موفقیت انجام شد. کد تایید برای شما از طریق پیامک ارسال خواهد شد."
+
+        const CodeSpan = document.getElementById("code")
+        CodeSpan.innerText = urlParams.get("activeCode")
+    }else{
+        statusSpan.innerText = "خطایی رخ داد در صورت کسر وجه، تا 24 ساعت اینده به حساب شما برگشت داده خواهد شد."
+    }
+</script>
+</body>
+</html>

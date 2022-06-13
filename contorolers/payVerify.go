@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -44,6 +45,8 @@ func PayVerify() gin.HandlerFunc {
 			if paymentNotFound != nil {
 				common.IsErr(paymentNotFound)
 				c.JSON(http.StatusInternalServerError, gin.H{})
+				location := url.URL{Path: "/payResult"}
+				c.Redirect(http.StatusFound, location.RequestURI())
 				return
 			}
 			_, err := models.ActiveCodesCollection.InsertOne(ctx, models.ActiveCode{
@@ -55,15 +58,17 @@ func PayVerify() gin.HandlerFunc {
 			if err == nil {
 				intCode, _ := strconv.Atoi(payment.OrderId)
 				if sendActiveCode(intCode, payment.PayerPhone) {
-					c.JSON(http.StatusOK, faces.PayVerifyRes{
-						ActiveCode: payment.OrderId,
-						SentSMS:    true,
-					})
+					q := url.Values{}
+					q.Set("activeCode", payment.OrderId)
+					q.Set("sentSMS", "1")
+					location := url.URL{Path: "/payResult", RawQuery: q.Encode()}
+					c.Redirect(http.StatusFound, location.RequestURI())
 					return
 				}
 			}
 		}
-		c.JSON(http.StatusInternalServerError, gin.H{})
+		location := url.URL{Path: "/payResult"}
+		c.Redirect(http.StatusFound, location.RequestURI())
 	}
 }
 
