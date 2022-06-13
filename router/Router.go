@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/MrMohebi/take-course-golestan-api.git/contorolers"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func Routs(r *gin.Engine) {
@@ -12,6 +13,7 @@ func Routs(r *gin.Engine) {
 	r.GET("/", contorolers.Index())
 	r.GET("/docs", contorolers.Docs())
 	r.GET("/payResult", contorolers.PayResult())
+	r.GET("/aboutUs", func(context *gin.Context) { context.HTML(http.StatusOK, "aboutUs.html", nil) })
 
 	r.POST("/login", contorolers.Login())
 	r.POST("/buyCode", contorolers.BuyCode())
