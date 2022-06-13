@@ -82,7 +82,8 @@ func idpayVerify(reqBody *faces.PayVerifyReq) bool {
 		return false
 	}
 
-	paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), false)
+	isTestPay, _ := strconv.ParseBool(os.Getenv("IS_PAYMENT_DEV"))
+	paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), isTestPay)
 	verifyRes := paymentClient.Verify(payment.IdpayId, payment.OrderId)
 
 	if !(verifyRes.ReqStatus.Success && verifyRes.Verify.Date > 0) {

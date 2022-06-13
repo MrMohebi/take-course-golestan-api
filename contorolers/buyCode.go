@@ -62,7 +62,8 @@ func BuyCode() gin.HandlerFunc {
 			PayerEmail:  reqBody.Email,
 			CreatedAt:   currentTime,
 		}
-		paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), false)
+		isTestPay, _ := strconv.ParseBool(os.Getenv("IS_PAYMENT_DEV"))
+		paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), isTestPay)
 		createRes := paymentClient.CreatePayment(
 			paymentInfo.OrderId,
 			paymentInfo.Amount,
