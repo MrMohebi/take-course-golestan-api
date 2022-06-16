@@ -73,6 +73,7 @@ func PayVerify() gin.HandlerFunc {
 }
 
 func idpayVerify(reqBody *faces.PayVerifyReq) bool {
+	currentTime := time.Now().Unix()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -91,14 +92,14 @@ func idpayVerify(reqBody *faces.PayVerifyReq) bool {
 	paymentClient := idpay.NewClient(os.Getenv("IDPAY_KEY"), isTestPay)
 	verifyRes := paymentClient.Verify(payment.IdpayId, payment.OrderId)
 
-	if !(verifyRes.ReqStatus.Success && verifyRes.Verify.Date > 0) {
+	if !(verifyRes.ReqStatus.Success) {
 		println(verifyRes.ErrorMessage)
 		println(verifyRes.Status)
 		return false
 	}
 
 	// update fields of payment
-	payment.VerifiedAt = verifyRes.Verify.Date
+	payment.VerifiedAt = currentTime
 	payment.PaidAt = verifyRes.Payment.Date
 	payment.CardNumber = verifyRes.Payment.CardNo
 	payment.CardNumberHash = verifyRes.Payment.HashedCardNo

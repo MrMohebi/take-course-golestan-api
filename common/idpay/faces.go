@@ -21,7 +21,7 @@ type payment struct {
 }
 
 type verify struct {
-	Date int64 `json:"date"`
+	Date int64 `json:"date,string"`
 }
 
 type CreatePaymentReq struct {
@@ -58,5 +58,5 @@ type VerifyRes struct {
 	Amount       int64  `json:"amount,string"`
 	Date         int64  `json:"date,string"`
 	Payment      payment
-	Verify       verify
+	//Verify       verify
 }
