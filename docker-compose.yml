@@ -21,8 +21,6 @@ services:
     build: .
     container_name: ${APP_NAME}-go
     restart: unless-stopped
-    dns:
-      - 178.22.122.100
     environment:
       - VIRTUAL_HOST=${APP_URL}
       - VIRTUAL_PORT=80
