@@ -14,4 +14,5 @@ RUN go build -o main .
 FROM alpine:3.17
 COPY --from=builder /app/main /
 COPY --from=builder /app/.env /
+COPY templates /templates
 CMD ["./main"]
